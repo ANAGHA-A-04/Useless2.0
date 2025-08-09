@@ -2,6 +2,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const path = require("path");
+
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+});
+
 
 // Increase Node.js memory limit
 if (process.env.NODE_ENV === 'production') {
