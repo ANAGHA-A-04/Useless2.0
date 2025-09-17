@@ -1,16 +1,16 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config();
-const path = require('path');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
+const path = require("path");
 
 const app = express();
 
 // Increase Node.js memory limit (set early)
-if (process.env.NODE_ENV === 'production') {
-  process.env.NODE_OPTIONS = '--max-old-space-size=4096';
+if (process.env.NODE_ENV === "production") {
+  process.env.NODE_OPTIONS = "--max-old-space-size=4096";
 } else {
-  process.env.NODE_OPTIONS = '--max-old-space-size=2048';
+  process.env.NODE_OPTIONS = "--max-old-space-size=2048";
 }
 
 // Middleware
@@ -21,14 +21,14 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 // Import routes after middleware
-const moodRoutes = require('./routes/moodRoutes');
+const moodRoutes = require("./routes/moodRoutes");
 
 // Routes
-app.use('/api', moodRoutes);
+app.use("/api", moodRoutes);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
-});
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+// });
 
 app.get('/', (req, res) => {
   res.send('Hello from Emoticoin server!');
@@ -37,11 +37,12 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 3001;
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log('MongoDB connected');
+    console.log("MongoDB connected");
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
-  .catch(err => console.error(err));
+  .catch((err) => console.error(err));
